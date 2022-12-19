@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- molla/checkout.html  22 Nov 2019 09:55:06 GMT -->
+
+<head>
+    {{>userLinks}}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+     <title>INSHOPCOM</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/product-details/assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/product-details/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/product-details/assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/product-details/assets/images/icons/site.html">
+    <link rel="mask-icon" href="/product-details/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/product-details/assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/product-details/assets/css/bootstrap.min.css">
+    <!-- Main CSS File -->
+
+    <link rel="stylesheet" href="/product-details/assets/css/style.css">
+
+    {{!--
+    <link rel="stylesheet" type="text/css" href="css/util.css"> --}}
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    {{>userLinkmolla}}
+</head>
+
+<body>
+
+
+
+    {{>userheaddermolla}}
+
+
+
+
+    <main class="main">
+        <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title">checkout</h1>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+            <div class="container">
+                <!-- End .footer -->
+                <div role="tabpanel" aria-labelledby="tab-address-link">
+                    <script>
+                        function fillform(fName, lName, addr1, addr2, pincode, TownCity, StateCounty, Country, phone, email) {
+                            console.log("loggerd")
+                            document.getElementById('FirstName').value = fName
+                            document.getElementById('LastName').value = lName
+                            document.getElementById('StreetAddress1').value = addr1
+                            document.getElementById('StreetAddress2').value = addr2
+                            document.getElementById('Town/City').value = TownCity
+                            document.getElementById('State/County').value = StateCounty
+                            document.getElementById('Country').value = Country
+                            document.getElementById('Postcode').value = pincode
+                            document.getElementById('Phone').value = phone
+                            document.getElementById('Email').value = email
+                        }
+                    </script>
+
+
+                    <div class="row">
+
+                        {{#each Addresss}}
+                        <div class="col-lg-6">
+                            <div class="card card-dashboard">
+                                <div class="card-body">
+
+                                    <input type="radio" class="card-title" onclick="fillform(
+                                                        '{{this.FirstName}}',
+                                                        '{{this.LastName}}',
+														'{{this.StreetAddress1}}',
+                                                        '{{this.StreetAddress2}}',
+														'{{this.Postcode}}',
+														'{{this.TownCity}}',
+                                                        '{{this.StateCounty}}',
+                                                        '{{this.Country}}',
+                                                        '{{this.Phone}}',
+														'{{this.Email}}'
+                                                        )">
+                                    <h3> Default Address</h3><!-- End .card-title -->
+
+                                    <p>{{this.FirstName}}{{this.LastName}}<br>
+                                        {{this.StreetAddress1}},
+                                        {{this.StreetAddress2}},<br>
+                                        {{this.Postcode}}<br>
+                                        {{this.TownCity}},
+                                        {{this.StateCounty}},{{this.Country}}<br>
+                                        {{this.Phone}}<br>
+                                        {{this.Email}}<br></p>
+                                    <a
+                                        href="/edit-Address/{{this.StreetAddress1}}/{{this.StreetAddress2}}/{{this.FirstName}}/{{this.LastName}}">Edit
+                                        <i class="icon-edit"></i></a><br>
+                                    <a
+                                        href="/delete-Address/{{this.StreetAddress1}}/{{this.StreetAddress2}}/{{this.FirstName}}/{{this.LastName}}">Delete
+                                        <i class="icon-delete"></i></a>
+
+                                    {{!-- <a href="#">Edit <i class="icon-edit"></i></a></p> --}}
+                                </div><!-- End .card-body -->
+                            </div><!-- End .card-dashboard -->
+                        </div><!-- End .col-lg-6 -->
+                        {{/each}}
+
+
+                    </div><!-- End .row -->
+                </div><!-- .End .tab-pane -->
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="checkout">
+                <div class="container">
+                    <div class="checkout-discount">
+
+                    </div><!-- End .checkout-discount -->
+                    <form action="#" id="checkout-form">
+                        <div class="row">
+
+                            <div class="col-lg-9">
+                                <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>First Name *</label>
+                                        <input type="text" class="form-control" name="FirstName" id="FirstName"
+                                            required>
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>Last Name *</label>
+                                        <input type="text" class="form-control" id="LastName" name="LastName" required>
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                {{!-- <label>Company Name (Optional)</label>
+                                <input type="text" class="form-control" name="CompanyName"> --}}
+
+                                <label>Country *</label>
+                                <input type="text" class="form-control" name="Country" id="Country" required>
+
+                                <label>Street address *</label>
+                                <input type="text" class="form-control" placeholder="House number and Street name"
+                                    name="StreetAddress1" id="StreetAddress1" required>
+                                <input type="text" class="form-control" placeholder="Appartments, suite, unit etc ..."
+                                    name="StreetAddress2" id="StreetAddress2" required>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Town / City *</label>
+                                        <input type="text" class="form-control" name="TownCity" id="Town/City" required>
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>State / County *</label>
+                                        <input type="text" class="form-control" name="StateCounty" id="State/County"
+                                            required>
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Postcode / ZIP *</label>
+                                        <input type="text" class="form-control" name="Postcode" id="Postcode" required>
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>Phone *</label>
+                                        <input type="tel" class="form-control" name="Phone" id="Phone" required>
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <label>Email address *</label>
+                                <input type="email" class="form-control" name="Email" id="Email" required>
+
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="checkout-create-acc">
+                                    <label class="custom-control-label" for="checkout-create-acc">Create an
+                                        account?</label>
+                                </div><!-- End .custom-checkbox -->
+
+
+
+
+
+                            </div>
+                            <!-- End .col-lg-9 -->
+                            <aside class="col-lg-3">
+                                <div class="summary">
+                                    <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
+
+                                    <table class="table table-summary">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr>
+                                                <td><a href="#">Beige knitted elastic runner shoes</a></td>
+                                                <td>$84.00</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><a href="#">Blue utility pinafore denimdress</a></td>
+                                                <td>$76,00</td>
+                                            </tr>
+                                            <tr class="summary-subtotal">
+                                                <td>Subtotal:</td>
+                                                <td>Rs.{{total}}</td>
+                                            </tr><!-- End .summary-subtotal -->
+                                            <tr>
+                                                <td>Shipping:</td>
+                                                <td>Free shipping</td>
+                                            </tr>
+                                            <tr class="summary-total">
+                                                <td>Total:</td>
+                                                <td>Rs.{{total}}</td>
+                                            </tr><!-- End .summary-total -->
+                                        </tbody>
+                                    </table><!-- End .table table-summary -->
+
+                                    <div class="accordion-summary" id="accordion-payment">
+                                        <div class="card">
+                                            <!-- End .card-header -->
+                                            <!-- End .collapse -->
+                                        </div><!-- End .card -->
+
+                                        <div class="card">
+                                            <!-- End .card-header -->
+                                            <div id="collapse-2" class="collapse" aria-labelledby="heading-2"
+                                                data-parent="#accordion-payment">
+                                                <div class="card-body">
+                                                    Ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio.
+                                                    Quisque volutpat mattis eros. Nullam malesuada erat ut turpis.
+                                                </div><!-- End .card-body -->
+                                            </div><!-- End .collapse -->
+                                        </div><!-- End .card -->
+
+                                        <div class="card">
+                                            <div class="card-header" id="heading-3">
+                                                <label class="card-title" style="padding: 5px;">
+                                                    <input type="radio" class="collapsed" role="button"
+                                                        data-toggle="collapse" href="#collapse-3" aria-expanded="false"
+                                                        aria-controls="collapse-3" name="payment-method" value="COD">
+                                                    Cash On Delivary
+                                                </label>
+                                            </div><!-- End .card-header -->
+                                            <div id="collapse-3" class="collapse" aria-labelledby="heading-3"
+                                                data-parent="#accordion-payment">
+                                                <div class="card-body">Cash on delivery (COD) is a type of transaction
+                                                    where the recipient pays for a good at the time of delivery rather
+                                                    than using credit.
+                                                </div><!-- End .card-body -->
+                                            </div><!-- End .collapse -->
+                                        </div><!-- End .card -->
+
+                                        <div class="card">
+                                            <div class="card-header" id="heading-4">
+                                                <label class="card-title" style="padding: 5px;">
+                                                    <input type="radio" class="collapsed" role="button"
+                                                        data-toggle="collapse" href="#collapse-4" aria-expanded="false"
+                                                        aria-controls="collapse-3" name="payment-method"
+                                                        value="RazoPay">
+                                                    RazoPay
+                                                </label>
+                                            </div>
+                                            <div id="collapse-4" class="collapse" aria-labelledby="heading-3"
+                                                data-parent="#accordion-payment">
+                                                <div class="card-body">RazoPay PayPal is an online payment system that
+                                                    makes paying for things online and sending and receiving money safe
+                                                    and secure..
+                                                </div><!-- End .card-body -->
+                                            </div>
+                                            <div class="card-header" id="heading-5">
+                                                <label class="card-title" style="padding: 5px;">
+                                                    <input type="radio" class="collapsed" role="button"
+                                                        data-toggle="collapse" href="#collapse-5" aria-expanded="false"
+                                                        aria-controls="collapse-3" name="payment-method" value="PayPal">
+                                                    Paypal
+                                                </label>
+                                            </div>
+                                            <div id="collapse-5" class="collapse" aria-labelledby="heading-3"
+                                                data-parent="#accordion-payment">
+                                                <div class="card-body">PayPal is an online payment system that makes
+                                                    paying for things online and sending and receiving money safe and
+                                                    secure..
+                                                </div><!-- End .card-body -->
+                                            </div>
+                                            {{#if wallet }}
+                                            <div class="card-header" id="heading-6">
+                                                <label class="card-title" style="padding: 5px;">
+                                                    <input type="radio" class="collapsed" role="button"
+                                                        data-toggle="collapse" href="#collapse-6" aria-expanded="false"
+                                                        aria-controls="collapse-3" name="payment-method" value="Wallet">
+                                                    wallet
+                                                </label>
+                                                <div id="collapse-6" class="collapse" aria-labelledby="heading-3"
+                                                    data-parent="#accordion-payment">
+                                                    <div class="card-body"> Balance of your wallet:
+                                                    </div><!-- End .card-body -->
+                                                </div>
+
+
+                                                {{/if}}
+
+                                            </div>
+
+                                            <div class="card-header" id="heading-5">
+                                                <h2 class="card-title">
+                                                    <img src="/product-details/assets/images/payments-summary.png"
+                                                        alt="payments cards">
+                                                    </a>
+                                                </h2>
+                                            </div><!-- End .card-header -->
+                                            <!-- End .collapse -->
+                                        </div><!-- End .card -->
+                                        <input type="text" name="userId" value="{{user._id}}" hidden>
+                                        <div class="card">
+                                            <!-- End .card-header -->
+
+                                        </div><!-- End .card -->
+                                    </div><!-- End .accordion -->
+
+                                    <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
+                                        <span class="btn-text">Place Order</span>
+                                        <span class="btn-hover-text">Proceed to Checkout</span>
+                                    </button>
+                                </div><!-- End .summary -->
+                            </aside><!-- End .col-lg-3 -->
+                        </div><!-- End .row -->
+                    </form>
+                    <a href="/Add-new-addresss/{{user._id}}">
+                        <div class="custom-control custom-checkbox">
+                            <h3>if you want to add new address</h3>
+                            <label for="checkout-diff-address">Ship to a different address?</label>
+                        </div><!-- End .custom-checkbox -->
+                    </a>
+
+
+
+
+
+
+
+                </div><!-- End .container -->
+            </div><!-- End .checkout -->
+        </div><!-- End .page-content -->
+    </main><!-- End .main -->
+
+
+
+
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+
+
+            <nav class="mobile-nav">
+                <ul class="mobile-menu">
+                    <li class="active">
+                        <a href="/">Home</a>
+
+
+
+                    </li>
+                    <li>
+                        <a href="/view-Order">My-Order</a>
+
+
+                    </li>
+                    <li>
+                        <a href="/My-Account" class="sf-with-ul">My-Account</a>
+
+                    </li>
+
+
+
+
+
+
+                </ul>
+            </nav><!-- End .mobile-nav -->
+
+
+
+        </div><!-- End .mobile-menu-wrapper -->
+    </div><!-- End .mobile-menu-container -->
+
+    <!-- Sign in / Register Modal -->
+    <div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="icon-close"></i></span>
+                    </button>
+
+                    <div class="form-box">
+                        <div class="form-tab">
+                            <ul class="nav nav-pills nav-fill" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin"
+                                        role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab"
+                                        aria-controls="register" aria-selected="false">Register</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="tab-content-5">
+                                <div class="tab-pane fade show active" id="signin" role="tabpanel"
+                                    aria-labelledby="signin-tab">
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <label for="singin-email">Username or email address *</label>
+                                            <input type="text" class="form-control" id="singin-email"
+                                                name="singin-email" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-group">
+                                            <label for="singin-password">Password *</label>
+                                            <input type="password" class="form-control" id="singin-password"
+                                                name="singin-password" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>LOG IN</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="signin-remember">
+                                                <label class="custom-control-label" for="signin-remember">Remember
+                                                    Me</label>
+                                            </div><!-- End .custom-checkbox -->
+
+                                            <a href="#" class="forgot-link">Forgot Your Password?</a>
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                    <div class="form-choice">
+                                        <p class="text-center">or sign in with</p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i>
+                                                    Login With Google
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-f">
+                                                    <i class="icon-facebook-f"></i>
+                                                    Login With Facebook
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .form-choice -->
+                                </div><!-- .End .tab-pane -->
+                                <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <label for="register-email">Your email address *</label>
+                                            <input type="email" class="form-control" id="register-email"
+                                                name="register-email" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-group">
+                                            <label for="register-password">Password *</label>
+                                            <input type="password" class="form-control" id="register-password"
+                                                name="register-password" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>SIGN UP</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="register-policy"
+                                                    required>
+                                                <label class="custom-control-label" for="register-policy">I agree to the
+                                                    <a href="#">privacy policy</a> *</label>
+                                            </div><!-- End .custom-checkbox -->
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                    <div class="form-choice">
+                                        <p class="text-center">or sign in with</p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i>
+                                                    Login With Google
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login  btn-f">
+                                                    <i class="icon-facebook-f"></i>
+                                                    Login With Facebook
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .form-choice -->
+                                </div><!-- .End .tab-pane -->
+                            </div><!-- End .tab-content -->
+                        </div><!-- End .form-tab -->
+                    </div><!-- End .form-box -->
+                </div><!-- End .modal-body -->
+            </div><!-- End .modal-content -->
+        </div><!-- End .modal-dialog -->
+    </div><!-- End .modal -->
+
+    <!-- swall -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!--<script src="/product-details/assets/js/jquery.min.js"></script>-->
+    <script src="/product-details/assets/js/bootstrap.bundle.min.js"></script>
+    <!--<script src="/product-details/assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/product-details/assets/js/jquery.waypoints.min.js"></script>-->
+    <script src="/product-details/assets/js/superfish.min.js"></script>
+    <script src="/product-details/assets/js/owl.carousel.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/product-details/assets/js/main.js"></script>
+    // RazoPay
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    {{!--
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script> --}}
+    <script>
+        $("#checkout-form").submit((e) => {
+            console.log("ajax work")
+            e.preventDefault()
+            $.ajax({
+                url: "/place-Order",
+                method: "post",
+                data: $('#checkout-form').serialize(),
+                success: (response) => {
+
+                    if (response.codSuccess) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'success',
+                            text: "rder placed succesfully",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#3085d6",
+                            confirmButtonText: "Go To Home",
+                            cancelButtonText: "Go To Orders"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.href = "/"
+                            } else {
+                                location.href = "/view-Order"
+                            }
+                        })
+                    } else if (response.payPal) {
+
+                        for (let i = 0; i < response.links.length; i++) {
+                            if (response.links[i].rel === 'approval_url') {
+                                location.href = response.links[i].href
+                                pypalPayment(response)
+                            }
+                        }
+
+                    }
+                    else {
+                        razorpayment(response)
+                    }
+                }
+            })
+        })
+        function pypalPayment(response) {
+            console.log("----------pypalPayment(response)----worked  ",response)
+            $.ajax({
+                url: '/paypal-change-status',
+                data: {
+                    order
+                },
+                method: 'post',
+                success:(responce)=>{
+                    alert(responce)
+                }
+                
+            })
+        }
+        function razorpayment(order) {
+            console.log("razorpayment work in html", order)
+            var options = {
+                "key": "rzp_test_kcEqIe0Sf1WS9z", // Enter the Key ID generated from the Dashboard
+                "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                "currency": "INR",
+                "name": "Inshopcom",
+                "description": "Test Transaction",
+                "image": "https://example.com/your_logo",
+                "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                "handler": function (response) {
+                        console.log("-function called")
+                    verifyPayment(response, order)
+                },
+                "prefill": {
+                    "name": "Gaurav Kumar",
+                    "email": "gaurav.kumar@example.com",
+                    "contact": "9999999999"
+                },
+                "notes": {
+                    "address": "Razorpay Corporate Office"
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            var rzp1 = new Razorpay(options,()=>{
+                console.log("Razorpay option worked",options)
+            });
+            rzp1.open();
+        }
+
+        function verifyPayment(payment, order) {
+            console.log("verifyPayment--work")
+            $.ajax({
+                url: '/verifiy-payment',
+                data: {
+                    payment,
+                    order
+                },
+                method: 'post',
+                success: (response) => {
+                    if (response.status) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'success',
+                            text: "rder placed succesfully",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#3085d6",
+                            confirmButtonText: "Go To Home",
+                            cancelButtonText: "Go To Orders"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.href = "/"
+                            } else {
+                                location.href = "/view-Order"
+                            }
+                        })
+
+
+                    } else {
+                        alert('hello')
+                    }
+
+                }
+            })
+        }
+
+    </script>
+
+</body>
+
+
+<!-- molla/checkout.html  22 Nov 2019 09:55:06 GMT -->
+
+</html>

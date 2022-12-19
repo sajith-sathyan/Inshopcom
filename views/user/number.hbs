@@ -1,0 +1,114 @@
+{{!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="getOtp" method="post">
+        <input type="text" placeholder="number" name="number">
+        <button>send</button>
+    </form>
+
+   
+</body>
+</html> --}}
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Login V1</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="userlogIn/images/icons/banner-08.jpg">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="userlogIn/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="userlogIn/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="userlogIn/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="userlogIn/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="userlogIn/vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="userlogIn/css/util.css">
+	<link rel="stylesheet" type="text/css" href="userlogIn/css/main.css">
+<!--===============================================================================================-->
+</head>
+<body>
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-pic js-tilt" data-tilt>
+					<h1>Enter Your Number</h1>
+				</div>
+
+				<form class="login100-form validate-form" id="enquiry_form"   method="post" action="getOtp">
+					{{!-- <span class="login100-form-title">
+						 Login
+					</span>	 --}}
+
+                   
+                        <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+						<input class="input100" type="text" name="number"    id="mobile"  required onkeyup="check(); return false;" placeholder="Enter The Number">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
+					</div>
+                    <span id="message"></span>
+                    {{#if sameNumber}}
+                    <div style="color: red;">number not exist</div>
+                    {{/if}}
+
+                    <div class="container-login100-form-btn">
+						<button class="login100-form-btn" id="enq_submit">
+							Submit
+						</button>
+					</div>
+
+                   
+					
+
+					
+
+					
+					
+					
+
+					
+					
+					
+				
+				</form>
+
+			</div>
+		</div>
+	</div>
+	
+	
+
+	
+<!--===============================================================================================-->	
+	<script src="userlogIn/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="userlogIn/vendor/bootstrap/js/popper.js"></script>
+	<script src="userlogIn/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="userlogIn/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="userlogIn/vendor/tilt/tilt.jquery.min.js"></script>
+	<script >
+		$('.js-tilt').tilt({
+			scale: 1.1
+		})
+	</script>
+<!--===============================================================================================-->
+	<script src="userlogIn/js/main.js"></script>
+
+</body>
+</html> 
