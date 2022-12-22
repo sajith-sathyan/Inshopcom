@@ -551,8 +551,8 @@ function pal() {
                     payment_method: "paypal",
                 },
                 redirect_urls: {
-                    return_url: "http://localhost:3000/success/",
-                    cancel_url: "http://localhost:3000/cancel",
+                    return_url: process.env.SUCCESS_URL||"http://localhost:3000/success/",
+                    cancel_url: process.env.CANCEL_URL||"http://localhost:3000/cancel",
                 },
                 transactions: [
                     {
@@ -812,7 +812,8 @@ function pal() {
                 item: objectId(proId),
                 name: product[0].ProductName,
                 price: product[0].price,
-                Quantity:product[0].Quantity
+                Quantity:product[0].Quantity,
+                Date:new Date()
 
             }
 
@@ -893,6 +894,7 @@ function pal() {
                         item: 1, quantity: 1, status: "pending", product: { $arrayElemAt: ['$product', 0] }
                     }
                 }
+               
 
             ]).toArray()
             resolve(WishlistItems)

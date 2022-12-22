@@ -26,6 +26,7 @@ function verifylogin(req, res, next) {
 
 
 
+
 /* GET home page. */
 
 // home
@@ -55,7 +56,7 @@ router.post("/otpVerify", controller.postOtpVerifyPage)
 
 //product details
 
-router.get("/productDetailes/:id", verifylogin, verifyStatus, controller.getProductDetailesPage)
+router.get("/productDetailes/:id",verifyStatus, controller.getProductDetailesPage)
 
 // add to cart
 router.get("/add-to-cart/:id", verifylogin, verifyStatus, controller.getAddToCartPage)
@@ -81,7 +82,7 @@ router.post("/place-Order", verifylogin, verifyStatus, controller.postCheckOutPa
 router.get("/view-Order", verifylogin, verifyStatus, controller.getViewOrderPage)
 router.post("/paypal-change-status", verifylogin, verifyStatus,controller.postPaypalChangeStaus)
 
-// show bills
+// show bills   
 
 
 
@@ -152,13 +153,14 @@ router.post("/forgot-Password", controller.postForgetPasswordPage)
 
 router.get("/change-Password", verifylogin, verifyStatus, controller.getChangePasswordPage)
 router.post("/change-password-conform",verifyStatus,verifylogin,controller.getConformPasswordPage)
-router.post("/change-pwd-repeatpassword",verifyStatus,verifylogin,controller.getRepeatPasswordPage)
+router.post("/change-pwd-repeatpassword",verifyStatus,verifylogin,controller.postRepeatPasswordPage)
+router.get("/change-pwd-repeatpassword",verifyStatus,verifylogin,controller.getRepeatPasswordPage)
 
 //remove product
 router.post("/remove-cart/:id", verifylogin, verifyStatus, controller.postRemoveCart)
 
-// // moolla index
-// router.get("/molla-index",verifylogin,verifyStatus,controller.getMollaIndexPage)
+// moolla index
+router.get("/molla-index",verifylogin,verifyStatus,controller.getMollaIndexPage)
 
 // // molla cart
 // router.get("/molla-cart",verifylogin,verifyStatus,controller.getMollaCartPage)

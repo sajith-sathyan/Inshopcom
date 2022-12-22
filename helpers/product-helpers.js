@@ -94,6 +94,7 @@ module.exports = {
         })
     },
     addCategory: (category) => {
+        
 
         return new Promise(async (resolve, reject) => {
             let response = {}
@@ -326,6 +327,7 @@ module.exports = {
         const couponObj = {
             coupon: coupon.coupon,
             PriceStart: coupon.priceStart,
+            PriceEnd:coupon.priceEnd,
             offer: coupon.offer,
             Quantity: coupon.Quantity,
             Discription: coupon.Discription,

@@ -39,6 +39,12 @@ module.exports = {
       console.log("......................................................", cartCount);
      wishlistCount = await userHelpers.getWishListCount(req.session.user._id)
       console.log("---------------wishlistCount-----------",wishlistCount);  
+      let wishlist=await userHelpers.getAllWishLIst(req.session.user._id)
+   
+    
+      console.log("------------------||------------",wishlist)
+    let product = await userHelpers.getWishListProducts(req.session.user._id)
+    console.log("------------------||------------",product)
     }
 
     productHelpers.getAllProducts().then((products) => {
@@ -57,7 +63,7 @@ module.exports = {
           element.OfferErr = false
         }
       });
-
+        
 
       let user = req.session.user
 
@@ -176,11 +182,15 @@ module.exports = {
       console.log("....../////////.......//././././././././././././././././././././.");
       console.log(product)
       console.log("............................................................");
+      let wishlistCount=null
+    let cartCount = null
+   
+    
 
       //product[0].imgid = product[0].imgid.map(e=>e.filename)  
       // console.log(product[0].imgid)
       //  product=product[0]
-      res.render("user/product-detail", { product , user:req.session.user,Category})
+      res.render("user/product-detail", { product , user:req.session.user,Category,cartCount,wishlistCount})
     })
 
   }, getAddToCartPage: (req, res) => {
@@ -197,8 +207,9 @@ module.exports = {
 
 
   }, getCartPage: async (req, res) => {
+     
     
-
+  
 
     let product = await userHelpers.getCartProducts(req.session.user._id)
     console.log("product|||||||||||||||||       |||||||||||||||||||||        ||||||||||||||", product);
@@ -215,7 +226,7 @@ module.exports = {
         let couponDetailes = await userHelpers.checkcoupon(req.session.coupon)
         console.log("----------------req.session.coupon----------------------", couponDetailes);
         req.session.copoenFailed = true
-        if (couponDetailes[0].PriceStart <= totalValue && couponDetailes[0].Quantity != 0) {
+        if (couponDetailes[0].PriceStart <= totalValue && couponDetailes[0].Quantity != 0 && couponDetailes[0].PriceEnd >= totalValue  ) {
           req.session.copoenFailed = false
           conertToOffer = couponDetailes[0].offer / 100
           amount = conertToOffer * totalValue
@@ -239,8 +250,14 @@ module.exports = {
 
       req.session.total = totalValue
       console.log(">>>>>>>>>>>>>>>>>> >>>>>>>>>>>> >>>>>>>>>>", req.session.user._id);
-      res.render("user/shopping-cart", { product, user: req.session.user, totalValue, "copoenErr": req.session.copoenFailed })
-      // req.session.copoenFailed =false
+      let wishlistCount=null
+      let cartCount = null
+     
+        cartCount = await userHelpers.getCartCount(req.session.user._id)
+        console.log("......................................................", cartCount);
+       wishlistCount = await userHelpers.getWishListCount(req.session.user._id)
+      res.render("user/shopping-cart", { product, user: req.session.user, totalValue, "copoenErr": req.session.copoenFailed ,cartCount,wishlistCount} )
+     
     }
 
   }, postCouponPage: (req, res) => {
@@ -271,7 +288,8 @@ module.exports = {
             } else {
               console.log("Ooooooooooooooooooooooooooooooooooooooooooooo")
               res.redirect("/cart")
-              req.session.copoenFailed = true
+              // res.send("ksdj")
+             
             }
 
           })
@@ -318,8 +336,11 @@ module.exports = {
     } else {
       req.session.walletBalance = false
     }
+    cartCount = await userHelpers.getCartCount(req.session.user._id)
+    console.log("......................................................", cartCount);
+   wishlistCount = await userHelpers.getWishListCount(req.session.user._id)
     console.log("./././//././././././././.", total);
-    res.render("user/chekout", { total, user: req.session.user, Addresss, "wallet": req.session.walletBalance })
+    res.render("user/chekout", { total, user: req.session.user, Addresss, "wallet": req.session.walletBalance, cartCount,wishlistCount})
     req.session.walletBalance = false
 
 
@@ -376,7 +397,10 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
         element.Date = dateCut
       }
     });
-    res.render('user/viewOrder', { user: req.session.user, orders })
+   let cartCount = await userHelpers.getCartCount(req.session.user._id)
+    
+  let wishlistCount = await userHelpers.getWishListCount(req.session.user._id)
+    res.render('user/viewOrder', { user: req.session.user, orders ,cartCount,wishlistCount})
     console.log("***********<><<><<><><><><>" + orders[0]);
     for (var i = 0; i < orders.length; i++) {
       console.log(orders[i].delivaryDetails);
@@ -404,7 +428,10 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
         element.statusE = false
       }
     });
-    res.render("user/View-Order-Products", { user: req.session.user, products })
+    let cartCount = await userHelpers.getCartCount(req.session.user._id)
+    
+  let wishlistCount = await userHelpers.getWishListCount(req.session.user._id)
+    res.render("user/View-Order-Products", { user: req.session.user, products ,cartCount,wishlistCount})
 
   },
   postVerifiyPaymentPage: (req, res) => {
@@ -446,12 +473,17 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
     res.redirect("/view-Order")
   },
   getMyAccountPage: async(req, res) => {
+    console.log("---getMyAccountPage--")
     let userDetials = await userHelpers.getMyAccountUser(req.session.user._id)
     console.log("--------userDetials-----",userDetials)
-    res.render("user/myAccount", { user: req.session.user,userDetials })
+  let cartCount = await userHelpers.getCartCount(req.session.user._id)
+  let wishlistCount = await userHelpers.getWishListCount(req.session.user._id)
+    res.render("user/myAccount", { user: req.session.user,userDetials,cartCount,wishlistCount})
   },
-  getAddNewAddresss: (req, res) => {
-    res.render("user/add-new-Address")
+  getAddNewAddresss:async (req, res) => {
+    let cartCount = await userHelpers.getCartCount(req.session.user._id)
+    let wishlistCount = await userHelpers.getWishListCount(req.session.user._id,cartCount)
+    res.render("user/add-new-Address",{cartCount,wishlistCount})
   },
   postSubmitAddressPage: (req, res) => {
     console.log("______________________             ____________________________     _____", req.session.user._id);
@@ -501,6 +533,10 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
         element.OfferErr = false
       }
     });
+    
+      
+      
+     
     res.render("user/viewCategoryProduct", { Category, product, title, user: req.session.user })
   },
   getWishListPage: (req, res) => {
@@ -520,8 +556,10 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
     console.log("-------req.body------", req.body)
     res.send("post")
   },
-  getChangePasswordPage: (req, res) => {
-    res.render("user/changePassword",{"wrongPassword":req.session.wrongPassword})
+  getChangePasswordPage: async(req, res) => {
+    let cartCount = await userHelpers.getCartCount(req.session.user._id)
+    let wishlistCount = await userHelpers.getWishListCount(req.session.user._id,cartCount)
+    res.render("user/changePassword",{"wrongPassword":req.session.wrongPassword,cartCount,wishlistCount})
    
   },
  
@@ -537,6 +575,142 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
 
   }, getWishListUserPage: async (req, res) => {
     
+    let wishlist=await userHelpers.getAllWishLIst(req.session.user._id)
+   
+    
+      console.log("------------------||------------",wishlist)
+    let product = await userHelpers.getWishListProducts(req.session.user._id)
+    console.log("product|||||||||||||||||       |||||||||||||||||||||        ||||||||||||||", product);
+    totalValue = 0
+    console.log("---------------", product)
+    
+
+
+    product.forEach(element => {
+
+      console.log("------||--produts--||--",element.product.Quantity)
+      if (element.product.Quantity != 0) {
+        
+        element.stockErr = false
+      } else {
+        element.stockErr = true
+      }
+    });
+    // if(wishlist.length!=0){
+    //     let array=wishlist[0].products 
+    // console.log("-----------",array);
+    // if(array.length==0){
+    //  req.session.emptyWishList=true
+    // }else{
+    //  req.session.emptyWishList=true
+    // } 
+    // }else{
+    //   req.session.emptyWishList=false
+    // }
+   
+
+    res.render("user/wishList", { product ,"emptyWishList":req.session.emptyWishList, user:req.session.user})
+    
+    
+  },
+  postRemoveWishList: (req, res) => {
+      console.log("---------------",req.params.id)
+      userHelpers.removeWishlist(req.params.id,req.session.user._id).then((response)=>{
+        res.json(response)
+      })  
+  },
+  postVerifyStatusPage:(req,res)=>{
+   console.log("postVerifyStatusPage---------payapal -----work-----")
+  },
+  getEditAddressPage:async(req,res)=>{
+    let cartCount = await userHelpers.getCartCount(req.session.user._id)
+     let wishlistCount = await userHelpers.getWishListCount(req.session.user._id,cartCount)
+    console.log("--------------",req.params.addrs1,req.params.addrs2,req.params.name1,req.params.name2)
+    let Addresss = await userHelpers.getSpecifAdressDetailes(req.session.user._id,req.params.addrs1,req.params.addrs2,req.params.name1,req.params.name2)
+    console.log("_____________________Addresss_________________________________", Addresss);
+        res.render("user/edit-address",{Addresss,cartCount,wishlistCount})
+  },
+  postEditAddressPage:(req,res)=>{
+    console.log("---------------------",req.body)
+
+    userHelpers.updateAddress(req.body,req.session.user._id).then((response)=>{
+     res.redirect('/place-Order')
+    })
+  },
+  postDeleteAddressPage:async(req,res)=>{
+    req.params.addrs1,req.params.addrs2,req.params.name1,req.params.name2
+   await userHelpers.deleteAddres(req.session.user._id,req.params.addrs1,req.params.addrs2,req.params.name1,req.params.name2).then((response))
+    {
+      res.redirect('/place-Order')
+    }
+    
+  },
+  getMyAccountAddresPage:async(req,res)=>{
+    let Addresss = await userHelpers.getAdressDetailes(req.session.user._id)
+    let cartCount = await userHelpers.getCartCount(req.session.user._id)
+  let wishlistCount = await userHelpers.getWishListCount(req.session.user._id,cartCount)
+    res.render('user/view-address',{Addresss,user:req.session.user,wishlistCount})
+  },
+  getMyAccountNewAddresss:async(req,res)=>{
+    let cartCount = await userHelpers.getCartCount(req.session.user._id)
+    let wishlistCount = await userHelpers.getWishListCount(req.session.user._id,cartCount)
+    res.render("user/my-account-new-address",{cartCount,wishlistCount})
+  },
+  postMyAccountNewAddresss:(req,res)=>{
+    userHelpers.addAdress(req.body,req.session.user._id).then((response)=>{
+      res.redirect("/My-Account-Addres")
+    })
+  },
+  getMyAccountEditAddresss:async(req,res)=>{
+    let Addresss = await userHelpers.getSpecifAdressDetailes(req.session.user._id,req.params.addrs1,req.params.addrs2,req.params.name1,req.params.name2)
+    let cartCount = await userHelpers.getCartCount(req.session.user._id)
+  let wishlistCount = await userHelpers.getWishListCount(req.session.user._id,cartCount)
+    res.render('user/my-account-edit-address',{Addresss,cartCount,wishlistCount})
+  },
+  postMyAccountEditAddresss:(req,res)=>{
+    userHelpers.updateEditedAddress(req.body,req.session.user._id).then((response)=>{
+      res.redirect("/My-Account-Addres")
+    })
+  },
+  getMyAccountDeleteAddress:async(req,res)=>{
+    await userHelpers.deleteMyAccountAddres(req.session.user._id,req.params.addrs1,req.params.addrs2,req.params.name1,req.params.name2).then((response)).then((response)=>{
+      res.redirect("/My-Account-Addres")
+    })
+
+  },
+  getConformPasswordPage:async(req,res)=>{
+     console.log("---getConformPasswordPage-----");
+    console.log("_______",req.body.password)
+    await userHelpers.validatePassword(req.body.password,req.session.user._id).then((response)=>{
+      if(response){
+        res.json({status:true})
+        console.log("-----if work-----")
+        // res.redirect("/change-pwd-repeatpassword")
+      }else {
+        console.log("--------else work")
+        res.json({status:false})
+        
+       
+      }
+    })
+  },
+  postRepeatPasswordPage:(req,res)=>{
+     console.log("------",req.body.password);
+     userHelpers.updatePassword(req.session.user._id,req.body.password).then((responce)=>{
+      
+      res.json(responce)
+     })
+  },
+  postPaypalChangeStaus:async(req,res)=>{
+     console.log("post Paypal ChangeStaus--|||||||    |||||||||      |||||||||||||--------",req.body)
+
+  },
+  getRepeatPasswordPage:async(req,res)=>{
+    let cartCount = await userHelpers.getCartCount(req.session.user._id)
+    let wishlistCount = await userHelpers.getWishListCount(req.session.user._id,cartCount)
+    res.render("user/change-pwd-repeatpassword",{cartCount,wishlistCount}) 
+  },
+  getMollaIndexPage:async(req,res)=>{
     let wishlist=await userHelpers.getAllWishLIst(req.session.user._id)
    
     
@@ -563,104 +737,42 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
         element.stockErr = false
       }
     });
-    // if(wishlist.length!=0){
-    //     let array=wishlist[0].products 
-    // console.log("-----------",array);
-    // if(array.length==0){
-    //  req.session.emptyWishList=true
-    // }else{
-    //  req.session.emptyWishList=true
-    // } 
-    // }else{
-    //   req.session.emptyWishList=false
-    // }
-   
-
-    res.render("user/wishList", { product ,"emptyWishList":req.session.emptyWishList})
-    
-    
-  },
-  postRemoveWishList: (req, res) => {
-      console.log("---------------",req.params.id)
-      userHelpers.removeWishlist(req.params.id,req.session.user._id).then((response)=>{
-        res.json(response)
-      })  
-  },
-  postVerifyStatusPage:(req,res)=>{
-   console.log("postVerifyStatusPage---------payapal -----work-----")
-  },
-  getEditAddressPage:async(req,res)=>{
-   
-    console.log("--------------",req.params.addrs1,req.params.addrs2,req.params.name1,req.params.name2)
-    let Addresss = await userHelpers.getSpecifAdressDetailes(req.session.user._id,req.params.addrs1,req.params.addrs2,req.params.name1,req.params.name2)
-    console.log("_____________________Addresss_________________________________", Addresss);
-        res.render("user/edit-address",{Addresss})
-  },
-  postEditAddressPage:(req,res)=>{
-    console.log("---------------------",req.body)
-
-    userHelpers.updateAddress(req.body,req.session.user._id).then((response)=>{
-     res.redirect('/place-Order')
-    })
-  },
-  postDeleteAddressPage:async(req,res)=>{
-    req.params.addrs1,req.params.addrs2,req.params.name1,req.params.name2
-   await userHelpers.deleteAddres(req.session.user._id,req.params.addrs1,req.params.addrs2,req.params.name1,req.params.name2).then((response))
-    {
-      res.redirect('/place-Order')
+    let Banner= await productHelpers.getBanner()
+    console.log("------Banner------",Banner)
+    let Category = await productHelpers.getAllcaegeory()
+    console.log("-------------Category--------------", Category);
+     let wishlistCount=null
+    let cartCount = null
+    if (req.session.user) {
+      cartCount = await userHelpers.getCartCount(req.session.user._id)
+      console.log("......................................................", cartCount);
+     wishlistCount = await userHelpers.getWishListCount(req.session.user._id)
+      console.log("---------------wishlistCount-----------",wishlistCount);  
     }
-    
-  },
-  getMyAccountAddresPage:async(req,res)=>{
-    let Addresss = await userHelpers.getAdressDetailes(req.session.user._id)
-    res.render('user/view-address',{Addresss,user:req.session.user})
-  },
-  getMyAccountNewAddresss:(req,res)=>{
-    res.render("user/my-account-new-address")
-  },
-  postMyAccountNewAddresss:(req,res)=>{
-    userHelpers.addAdress(req.body,req.session.user._id).then((response)=>{
-      res.redirect("/My-Account-Addres")
-    })
-  },
-  getMyAccountEditAddresss:async(req,res)=>{
-    let Addresss = await userHelpers.getSpecifAdressDetailes(req.session.user._id,req.params.addrs1,req.params.addrs2,req.params.name1,req.params.name2)
-    res.render('user/my-account-edit-address',{Addresss})
-  },
-  postMyAccountEditAddresss:(req,res)=>{
-    userHelpers.updateEditedAddress(req.body,req.session.user._id).then((response)=>{
-      res.redirect("/My-Account-Addres")
-    })
-  },
-  getMyAccountDeleteAddress:async(req,res)=>{
-    await userHelpers.deleteMyAccountAddres(req.session.user._id,req.params.addrs1,req.params.addrs2,req.params.name1,req.params.name2).then((response)).then((response)=>{
-      res.redirect("/My-Account-Addres")
-    })
 
-  },
-  getConformPasswordPage:async(req,res)=>{
-     console.log("---getConformPasswordPage-----");
-    console.log("_______",req.body.password)
-    await userHelpers.validatePassword(req.body.password,req.session.user._id).then((response)=>{
-      if(response){
-        console.log("-----if work-----")
-        res.render("user/change-pwd-repeatpassword")  
-      }else {
-        console.log("--------else work")
-        res.json(response)
-      }
-    })
-  },
-  getRepeatPasswordPage:(req,res)=>{
-     console.log("------",req.body.password);
-     userHelpers.updatePassword(req.session.user._id,req.body.password).then((responce)=>{
-      
-      res.json(responce)
-     })
-  },
-  postPaypalChangeStaus:(req,res)=>{
-     console.log("post Paypal ChangeStaus--|||||||    |||||||||      |||||||||||||--------",req.body)
+    productHelpers.getAllProducts().then((products) => {
+      console.log(".........................................          .....................", products);
+      products.forEach(element => {
+        if (element.Quantity == 0) {
+          element.stockErr = true
+        } else {
+          element.stockErr = false
+        }
+      });
+      products.forEach(element => {
+        if (element.offer != 0) {
+          element.OfferErr = true
+        } else {
+          element.OfferErr = false
+        }
+      });
 
+
+      let user = req.session.user
+     
+
+      res.render('user/index00', { products, user,wishlistCount, cartCount, Category,Banner,product  });
+    })
   }
 
   

@@ -28,11 +28,13 @@
     <link rel="stylesheet" href="/product-details/assets/css/bootstrap.min.css">
     <!-- Main CSS File -->
     <link rel="stylesheet" href="/product-details/assets/css/style.css">
-    {{>userLinkmolla}}
+    {{>userLinkCss}}
+   
 </head>
 
 <body>
-    {{>userheaddermolla}}
+    {{>userHadder}}
+      
     <div class="page-wrapper">
 
 
@@ -53,7 +55,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-9">
-
+    
                                 <table class="table table-cart table-mobile">
                                     <thead>
                                         <tr>
@@ -83,10 +85,11 @@
                                                 </div><!-- End .product -->
                                             </td>
                                             <td class="price-col">{{this.product.price}}</td>
-                                            <td class="product-col" >
+                                            <br>
+                                            <td class="product-col">
 
-                                                <div  class="wrap-num-product flex-w m-l-auto m-r-0"
-                                                    style="display: flex;text-align:center">
+                                                <div  class="product"
+                                                    style="display: flex;text-align:center;">
                                                     <button 
                                                         onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1)"
                                                         style="width: 30px;border:0px">
@@ -110,6 +113,7 @@
 
                                                 </div>
                                             </td>
+                                            <br>
                                             <td class="price-col" class="remove-col">
                                                 <div class="dropdown">
                                                     <button onclick="RemoveCart('{{this.product._id}}')"
@@ -224,44 +228,7 @@
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
     <!-- Mobile Menu -->
-    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
-
-    <div class="mobile-menu-container">
-        <div class="mobile-menu-wrapper">
-            <span class="mobile-menu-close"><i class="icon-close"></i></span>
-
-           
-
-            <nav class="mobile-nav">
-                <ul class="mobile-menu">
-                    <li class="active">
-                        <a href="/">Home</a>
-
-                       
-                       
-                    </li>
-                    <li>
-                        <a href="/view-Order">My-Order</a>
-                        
-                        
-                    </li>
-                    <li>
-                        <a href="/My-Account" class="sf-with-ul">My-Account</a>
-                        
-                    </li>
-                    
-                    
-                    
-                    
-                    
-                    
-                </ul>
-            </nav><!-- End .mobile-nav -->
-
-            
-            
-        </div><!-- End .mobile-menu-wrapper -->
-    </div><!-- End .mobile-menu-container -->
+    {{>mobileView}}
 
     <!-- Sign in / Register Modal -->
     <div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">

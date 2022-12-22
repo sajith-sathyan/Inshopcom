@@ -1,0 +1,49 @@
+<div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+            
+            
+            <nav class="mobile-nav">
+                <ul class="mobile-menu">
+                    <li class="active">
+                        <a href="/">Home</a>
+
+                        
+                        
+                    </li>
+                    <li>
+                        {{#if user}}
+                        <a href="/view-Order">My Order</a>
+                        {{/if}}
+                        
+                    </li>
+                    <li>
+                        {{#if user}}
+                        <a href="/My-Account" class="sf-with-ul">MY Account</a>
+                        {{/if}}
+                        
+                    </li>
+                    <li>
+                      {{#if user}}
+                        <a href="/wishlist" class="sf-with-ul">Wishlist</a>
+                       {{/if}} 
+                        
+                    </li>
+                     <li>
+                      {{#if user}}
+                        <a href="/logout" class="sf-with-ul">Log out></a>
+                        {{else}}
+                         <a href="/login" class="sf-with-ul">Log in</a>
+                       {{/if}} 
+                        
+                    </li>
+                    
+                </ul>
+            </nav><!-- End .mobile-nav -->
+
+            
+        </div><!-- End .mobile-menu-wrapper -->
+    </div><!-- End .mobile-menu-container -->

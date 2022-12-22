@@ -1,11 +1,11 @@
   <!DOCTYPE html>
 <html lang="en">
 
-{{>userLinkmolla}}
+{{>userLinkCss}}
 <!-- molla/dashboard.html  22 Nov 2019 10:03:13 GMT -->
 <head>
 
-    {{>userLinkmolla}}
+   {{>userHadder}}
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="/product-details/assets/css/bootstrap.min.css">
     <!-- Main CSS File -->
@@ -19,107 +19,7 @@
     
        
        
-	  <header class="header">
-        <div class="header-top">
-            <div class="container">
-                <div class="header-left">
-
-
-
-                </div><!-- End .header-left -->
-
-
-            </div><!-- End .container -->
-        </div><!-- End .header-top -->
-
-        <div class="header-middle sticky-header">
-            <div class="container">
-                <div class="header-left">
-                    <button class="mobile-menu-toggler">
-                        <span class="sr-only">Toggle mobile menu</span>
-                        <i class="icon-bars"></i>
-                    </button>
-
-                    <a href="index.html" class="logo">
-                        <span style="font-weight: 800;font-size:larger;color:#cc3333">INSHOPCOM</span>
-                    </a>
-
-                    <nav class="main-nav">
-                        <ul class="menu sf-arrows">
-                            <li>
-                                <a href="/">Home</a>
-
-
-                            </li>
-                            <li>
-                                <a href="view-Order">My Order</a>
-
-
-
-                            </li>
-                            <li>
-                                <a href="My-Account">My-Account</a>
-
-
-
-                            </li>
-
-
-                        </ul><!-- End .menu -->
-                    </nav><!-- End .main-nav -->
-                </div><!-- End .header-left -->
-
-                <div class="header-right">
-
-                     
-                    <div class="dropdown cart-dropdown">
-                        <a href="wishlist" class="dropdown-toggle" role="button" 
-                            aria-expanded="false" data-display="static">
-                            
-                            <i class="icon-heart"></i>
-                            {{#if user}}
-                            
-                            <span class="cart-count">{{wishlistCount}}</span>
-                            {{/if}}
-                            
-                        </a>
-
-                        
-                        
-                    </div><!-- End .cart-dropdown -->
-
-                    <a href="cart">
-                        <div class="dropdown cart-dropdown">
-                            <div class="dropdown-toggle" role="button" 
-                                aria-expanded="false" data-display="static">
-                                 
-                                <i class="icon-shopping-cart"></i>
-                                 
-                                  {{#if user}}
-                                <span id="cart-count" class="cart-count">{{cartCount}}</span>
-                                 {{/if}}
-                            </div>
-                    </a>
-                    
-                    
-                        </div><!-- End .dropdown-menu -->
-
-
-                </div><!-- End .cart-dropdown -->
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" style="padding-left: 10px;"></div>
-                <div type="button" class="btn btn-primary " data-bs-toggle="dropdown" aria-expanded="false">
-                    {{#if user}}
-                    <a href="My-Account" style="color:aliceblue;">{{user.name}}</a>
-                    {{else}}
-                    <a href="login" style="color:aliceblue;">Log In</a>
-                    {{/if}}
-                </div>
-            </div>
-        </div><!-- End .header-right -->
-        </div><!-- End .container -->
-        </div><!-- End .header-middle -->
-    </header><!-- End .header -->
+	  
 
         <main class="main">
         	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">

@@ -5,7 +5,7 @@
 <!-- molla/checkout.html  22 Nov 2019 09:55:06 GMT -->
 
 <head>
-    {{>userLinks}}
+    
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -35,14 +35,15 @@
     <link rel="stylesheet" type="text/css" href="css/util.css"> --}}
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    {{>userLinkmolla}}
+    {{>userLinkCss}}
+    
 </head>
 
 <body>
 
+{{>userHadder}}
 
-
-    {{>userheaddermolla}}
+ 
 
 
 
@@ -204,22 +205,13 @@
 
                                     <table class="table table-summary">
                                         <thead>
-                                            <tr>
-                                                <th>Product</th>
-                                                <th>Total</th>
-                                            </tr>
+                                          
                                         </thead>
 
                                         <tbody>
-                                            <tr>
-                                                <td><a href="#">Beige knitted elastic runner shoes</a></td>
-                                                <td>$84.00</td>
-                                            </tr>
+                                         
 
-                                            <tr>
-                                                <td><a href="#">Blue utility pinafore denimdress</a></td>
-                                                <td>$76,00</td>
-                                            </tr>
+                                           
                                             <tr class="summary-subtotal">
                                                 <td>Subtotal:</td>
                                                 <td>Rs.{{total}}</td>
@@ -392,6 +384,10 @@
                     </li>
                     <li>
                         <a href="/My-Account" class="sf-with-ul">My-Account</a>
+
+                    </li>
+                     <li>
+                        <a href="/cart" class="sf-with-ul">Cart</a>
 
                     </li>
 

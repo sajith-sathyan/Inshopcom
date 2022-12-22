@@ -3,13 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
     "chart.js": "^4.0.1",
     "cookie-parser": "~1.4.4",
+    "cropperjs": "^1.5.13",
     "crypto": "^1.0.1",
     "debug": "~2.6.9",
     "dotenv": "^16.0.3",
@@ -30,6 +32,6 @@
     "picomatch": "^2.3.1",
     "promise": "^8.3.0",
     "razorpay": "^2.8.4",
-    "twilio": "^3.83.2"
+    "twilio": "^2.5.2"
   }
 }

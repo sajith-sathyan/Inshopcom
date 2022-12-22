@@ -23,17 +23,20 @@
     <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff"> --}}
-     {{>userLinkmolla}}
+    
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="/product-details/assets/css/bootstrap.min.css">
     <!-- Main CSS File -->
     <link rel="stylesheet" href="/product-details/assets/css/style.css">
+    {{>userLinkCss}}
    
 </head>
 
+    {{>userHadder}}
+
 
 <body>
-    {{>userheaddermolla}}
+   
   
        
    
@@ -47,9 +50,9 @@
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="My-account">My Account</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">My Order</li>
                     </ol>
                 </div><!-- End .container -->
             </nav><!-- End .breadcrumb-nav -->
@@ -146,6 +149,11 @@
                         <a href="/My-Account" class="sf-with-ul">My-Account</a>
                         
                     </li>
+                     <li>
+                        <a href="/Cart" class="sf-with-ul">Cart</a>
+                        
+                    </li>
+                    
                     
                     
                     

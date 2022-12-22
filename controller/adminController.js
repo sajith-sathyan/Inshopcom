@@ -6,7 +6,7 @@ const userHelpers =require("../helpers/user-helper")
 var router = express.Router();
 
 var productHelpers= require("../helpers/product-helpers");
-const { AwsList } = require('twilio/lib/rest/accounts/v1/credential/aws');
+
 
 
 module.exports={
