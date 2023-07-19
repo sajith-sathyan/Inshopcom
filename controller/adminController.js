@@ -11,15 +11,14 @@ var productHelpers= require("../helpers/product-helpers");
 
 module.exports={
         getLoginPage:(req,res)=>{
-        // user=req.session.admin.loggedIn
-        // res.render("admin/adminLogin")
+      
         res.render("admin/adminLogin")
     },
     postLoginPage:(req,res)=>{
-        console.log('called:::::::::::::::::::::');
+       
         
             adminHelper.adminLogin(req.body).then((response)=>{
-                // console.log("userStatus",response.userStatus);  
+             
                 if(response.status){
                 
                   req.session.admin=response.user
@@ -69,23 +68,20 @@ module.exports={
         let totalSalesByYear =await productHelpers.totalSalesByIncomeYear() 
         // let totalSalesByMonth=await productHelpers.totalSalesByIncomeMonth()
         let totalSalesByDaily =await productHelpers.totalSalesByIncomeDaily()
-        console.log("totalOrderCount---------",totalOrderCount)
-        console.log("totalUser---------",totalUser)
-        console.log("incomeByYear---------",totalSalesByYear)
-        console.log("totalSalesByDaily---------",totalSalesByDaily)
+      
 
         
         res.render('admin/Dashboard',{totalSalesByYear,totalSalesByDaily,totalOrderCount,totalUser});
     },
     getCustomerPage:(req,res)=>{
         productHelpers.getAllUser().then((user)=>{
-            console.log(user);
+      
             res.render('admin/customers',{user});
           })
     },
     getCategoryPage:async(req,res)=>{
         await productHelpers.getCategoryDetails().then((category)=>{
-            console.log(category);
+          
             res.render('admin/category',{category});  
             }) 
         
@@ -93,7 +89,7 @@ module.exports={
     getProductPage:(req,res)=>{
     
         productHelpers.getAllProducts().then((products)=>{
-            console.log(products);
+           
             products.forEach(element => {
                 if(element.offer!=0){
                     element.showBanner=true
@@ -108,18 +104,17 @@ module.exports={
     },
     getAddProductPage:async(req,res)=>{
         await productHelpers.getCategoryDetails().then((category)=>{
-            console.log(category);
+        
             res.render('admin/add-Products',{category});  
             }) 
           
     //   res.render('admin/add-Products'); 
     },
     postAddProductPage:(req,res)=>{
-        console.log(":::::::::::::::::::::::::::::::::::");
-        console.log(req.body,"////////////////////////////////////////////////");
+     
     
         if(req.files){
-            console.log("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",req.files);
+          
           const files=req.files
           const file =files.map((file)=>{
             return file
@@ -129,10 +124,10 @@ module.exports={
           })
           const product =req.body
           product.img = fileName
-          console.log("ccccccccccccccccccccccccccccccccccccccccccccccccccccc",product);
+      
 
             productHelpers.addProduct(product).then((data)=>{
-                console.log(":::::::::::::::::::::::::::::::::::",data.insertedIds);
+              
                 console.log("sucess")
                 res.redirect("/admin/Product")
             })
@@ -148,7 +143,7 @@ module.exports={
             console.log(proId);
 
             productHelpers.deleteProduct(proId).then(()=>{
-            console.log('--------------------------------------');
+           
             res.redirect("/admin/product")
   
         })
@@ -166,7 +161,7 @@ module.exports={
     },
     postEditProductPage:(req,res)=>{
         if(req.files){
-            console.log("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",req.files);
+         
           const files=req.files
           const file =files.map((file)=>{
             return file
@@ -176,7 +171,7 @@ module.exports={
           })
           const product =req.body
           product.img = fileName
-          console.log("ccccccccccccccccccccccccccccccccccccccccccccccccccccc",product);
+
 
           productHelpers.updateProduct(req.params.id,product).then(()=>{
             res.redirect("/admin/product")
@@ -196,7 +191,7 @@ module.exports={
         if(req.session.admin){
             res.render("admin/add-category")
         }else{
-            console.log("mamamamammaamamamm");
+   
             
             res.render("admin/add-category",{"exitCategory":req.session.exitCategory})
             req.session.exitCategory=false
@@ -209,9 +204,9 @@ module.exports={
        
 
         productHelpers.addCategory(req.body).then((response)=>{
-            console.log("+++++++++++++++++++",response);
+   
            if(response){
-                console.log("}}}}}}}}}}}}}}}",response);
+             
                 console.log("if work");
                 res.redirect("/admin/category")
                 
@@ -230,14 +225,14 @@ module.exports={
             console.log(response);
             productHelpers.blockUser(req.params.id).then((response)=>{
                 req.session.userBlock=true
-              console.log(response);
+          
               res.redirect("/admin/customers")
             }) 
            
           })
     },
     postUserUnblockPage:(req,res)=>{
-        console.log(req.params.id,"*******************************///////////******************************");
+      
         productHelpers.unblockUser(req.params.id).then((response)=>{
             req.session.userBlock=false
           console.log(response);
@@ -250,7 +245,7 @@ module.exports={
             console.log(proId);
 
             productHelpers.CategoryDeleate(proId).then(()=>{
-            console.log('--------------------------------------');
+           
             res.redirect("/admin/category")
   
         })
@@ -259,7 +254,7 @@ module.exports={
         
         if(req.files){
             
-            console.log(req.files);
+          
             res.send("sucess")
         }else{
             res.send("failed")
@@ -271,7 +266,7 @@ module.exports={
             console.log(req.body);
             console.log(req.files.Image);
         productHelpers.insertFrontImage(req.body).then((data)=>{
-            console.log("...........................................................",data);
+         
         })
             
     },
@@ -283,16 +278,15 @@ module.exports={
        
     },
     getOrderProductsPage:async(req,res)=>{
-        console.log("__________________________________________",req.params.id);
+        
         let products= await productHelpers.getOrderProducts(req.params.id)
        
-     console.log("||||||||||||  |||||||||| |||||||||||||products",products);
-   
+    
         
         res.render("admin/view-orded-product",{products})
     },
     postupdateOrderStatusPage:(req,res)=>{
-        console.log("|||||||      ||||||||||      |||||||||||| ",req.params.id+"|||"+req.params.item+"|||",req.body.status);
+       
         let status = req.body.status
         productHelpers.changeOrderStaus(req.params.id,req.params.item,status).then((response)=>{
             var id=req.params.id
@@ -305,9 +299,7 @@ module.exports={
     getImageListPage:(req,res)=>{
         productHelpers.getProductsImages(req.params.id).then((products)=>{
             console.log(products);
-            // for(var i =0; i<3;i++){
-            //     console.log(products);
-            // }
+         
             let image=products.img
             res.render("admin/image-list",{image})
           })
@@ -317,9 +309,9 @@ module.exports={
     getProductOfferPage:async(req,res)=>{
          
         // res.send("done")
-        console.log("______________________________getProductOfferPage start________________________");
+   
        let product=await productHelpers.getPoductPrice(req.params.id)
-       console.log("___________________________originalPrice___________________________",product[0].originalPrice);
+    
         let  staticPrice=product[0].price;
         req.session.staticPrice=staticPrice
         
@@ -333,14 +325,13 @@ module.exports={
             }
     },
     postProductOfferPage:(req,res)=>{
-       console.log("________________________________________",req.body.price);
-       console.log("____________________req.session.staticPrice_____________",req.session.staticPrice)
+
        let Offer=req.body.price;
        
     //    let originalPrice=req.session.staticPrice;
        let amount=Offer/100;
        let price=amount*req.session.staticPrice
-       console.log("_______________________||   ||________||      ||___________",price);
+      
        
        
        let id=req.body.id
@@ -353,7 +344,7 @@ module.exports={
 
     },
     getcancelOfferPage:async(req,res)=>{
-       console.log("_________________,req.session.staticPrice_____________",req.session.staticPrice);
+     
            
            let product=await productHelpers.getPoductPrice(req.params.id)
            let staticPrice=product[0].originalPrice
@@ -369,7 +360,7 @@ module.exports={
         res.render("admin/forms")
     },
     postCouponPage:(req,res)=>{
-        console.log("__________________",req.body);
+      
         productHelpers.addNewCoupon(req.body).then(()=>{
             res.redirect("/admin/coupon")
         })
@@ -388,7 +379,7 @@ module.exports={
         // });
         // //  let  product = getProductFromOrderCollection()
         let order = await productHelpers.getAllDelivaryProduct()
-        console.log("------------orderitem------------",order);
+ 
         order.forEach(element => {
             if(element.revenew=='null'){
                 element.revenew=parseInt(element.quantity) * parseInt(element.product.price)
@@ -400,19 +391,19 @@ module.exports={
         res.render("admin/sales-report",{order})
     },
     postSearchSalesReportPage:async(req,res)=>{
-        console.log("-------------",req.body)
+       
         let order = await productHelpers.getAllOrderByDate(req.body)
         
         order.forEach(element => {
             
             if(element.revenew=='null'){
                 element.revenew=parseInt(element.quantity) * parseInt(element.product.price)
-                console.log("-----------",element.revenew)
+         
             }
            
          
         });
-            console.log("------|||||||||||||||||----------",order)
+         
             res.render("admin/sales-report-search",{order})
         
        
@@ -420,16 +411,16 @@ module.exports={
        
     },
     getAddToBannerPage:async(req,res)=>{
-      console.log("--------",req.params.id)
+    
       let product=await productHelpers.getBannerProduct(req.params.id)
       res.render("admin/banner",{product})
     },
     postAddToBannerPage:async(req,res)=>{
         let banner = await productHelpers.getBanner()
-        console.log("-------banner------",banner.length)
+       
         if(banner.length==0){
             if(req.files){
-                console.log("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",req.files);
+              
               const files=req.files
               const file =files.map((file)=>{
                 return file
@@ -439,10 +430,9 @@ module.exports={
               })
               const product =req.body
               product.img = fileName
-              console.log("ccccccccccccccccccccccccccccccccccccccccccccccccccccc",product);
+            
     
                 productHelpers.addBanner(product).then((data)=>{
-                    console.log(":::::::::::::::::::::::::::::::::::",data.insertedIds);
                     console.log("sucess")
                   res.redirect("/Product")
                 })
@@ -455,7 +445,7 @@ module.exports={
         }else{
             productHelpers.removeBanner(banner[0]._id).then(()=>{
                 if(req.files){
-                    console.log("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",req.files);
+                    
                   const files=req.files
                   const file =files.map((file)=>{
                     return file
@@ -465,10 +455,10 @@ module.exports={
                   })
                   const product =req.body
                   product.img = fileName
-                  console.log("ccccccccccccccccccccccccccccccccccccccccccccccccccccc",product);
+             
         
                     productHelpers.addBanner(product).then((data)=>{
-                        console.log(":::::::::::::::::::::::::::::::::::",data.insertedIds);
+                      
                         console.log("sucess")
                         res.redirect("/admin/Product")
                     })
