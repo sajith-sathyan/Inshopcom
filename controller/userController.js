@@ -29,26 +29,26 @@ const paypal = require('paypal-rest-sdk');
 module.exports = {
   getHomePage: async (req, res) => {
     let Banner= await productHelpers.getBanner()
-    console.log("------Banner------",Banner)
+  
     let Category = await productHelpers.getAllcaegeory()
-    console.log("-------------Category--------------", Category);
+ 
      let wishlistCount=null
     let cartCount = null
     if (req.session.user) {
       cartCount = await userHelpers.getCartCount(req.session.user._id)
-      console.log("......................................................", cartCount);
+      
      wishlistCount = await userHelpers.getWishListCount(req.session.user._id)
-      console.log("---------------wishlistCount-----------",wishlistCount);  
+     
       let wishlist=await userHelpers.getAllWishLIst(req.session.user._id)
    
     
-      console.log("------------------||------------",wishlist)
+     
     let product = await userHelpers.getWishListProducts(req.session.user._id)
-    console.log("------------------||------------",product)
+  
     }
 
     productHelpers.getAllProducts().then((products) => {
-      console.log(".........................................          .....................", products);
+
       products.forEach(element => {
         if (element.Quantity == 0) {
           element.stockErr = true
@@ -80,7 +80,7 @@ module.exports = {
 
   },
   postLoginPage: (req, res) => {
-    console.log("post");
+   
     userHelpers.doLogin(req.body).then((response) => {
 
       console.log("userStatus", response.userStatus);
@@ -108,7 +108,7 @@ module.exports = {
   },
   postSignInPage: (req, res) => {
     userHelpers.doSignup(req.body).then((response) => {
-      console.log(response);
+  
       if (response.email) {
         req.session.sameEmail = true
         res.redirect("/signup")
@@ -124,25 +124,24 @@ module.exports = {
     res.redirect('/')
   },
   getOtpPage: (req, res) => {
-    console.log("-----getOtpPage------");
+    
     if (req.session.user) {
-      console.log("-----if------");
+      
       res.render("user/number")
     } else {
-      console.log("-----else------");
+     
       res.render("user/number", { "sameNumber": req.session.numberNotExit })
       req.session.numberNotExit = false
     }
 
   },
   postOtpPage: (req, res) => {
-    console.log("//////////////", req.body);
-    console.log("::::::::::::::", '+91' + (req.body.number));
-    req.session.phone = '+91' + (req.body.number)
+   
+   
 
 
     userHelpers.checkMobileNUmber(req.body.number).then((user) => {
-      console.log("|||| ||||| |||||", user);
+     
 
       let number = req.body.number
       let existNumber = user.mobile
@@ -167,9 +166,9 @@ module.exports = {
     res.render("user/verifyOtp")
   },
   postOtpVerifyPage: (req, res) => {
-    console.log("wwwwwwwwwwwwwwwwww", req.session.phone);
+    
     const otp = req.body.otp
-    console.log(".,.,.,.,.,.,.,.,", req.body.otp);
+  
     client.verify.v2
       .services(verifySid)
       .verificationChecks.create({ to: req.session.phone, code: otp })
@@ -179,9 +178,9 @@ module.exports = {
   getProductDetailesPage: (req, res) => {
     productHelpers.getAllProductsForProductDetailes(req.params.id).then(async(product) => {
       let Category = await productHelpers.getAllcaegeory()
-      console.log("....../////////.......//././././././././././././././././././././.");
+    
       console.log(product)
-      console.log("............................................................");
+      
       let wishlistCount=null
     let cartCount = null
    
@@ -197,7 +196,7 @@ module.exports = {
 
 
 
-    console.log("___________________________________api/calling________________", req.params.id);
+  
     userHelpers.AddToCart(req.params.id, req.session.user._id).then((response) => {
       res.json({ status: true })
 
@@ -212,26 +211,25 @@ module.exports = {
   
 
     let product = await userHelpers.getCartProducts(req.session.user._id)
-    console.log("product|||||||||||||||||       |||||||||||||||||||||        ||||||||||||||", product);
+
     totalValue = 0
     
 
     if (product.length > 0) {
 
       totalValue = await userHelpers.getTotalAmount(req.session.user)
-      console.log("------------------------totalValue-----------------", totalValue);
-      console.log("-------------------------user in cart------------", req.session.user);
+   
       if (req.session.couponStatus) {
-        console.log("--------------------worked-----------worked----------worked---------", req.session.coupon);
+       
         let couponDetailes = await userHelpers.checkcoupon(req.session.coupon)
-        console.log("----------------req.session.coupon----------------------", couponDetailes);
+       
         req.session.copoenFailed = true
         if (couponDetailes[0].PriceStart <= totalValue && couponDetailes[0].Quantity != 0 && couponDetailes[0].PriceEnd >= totalValue  ) {
           req.session.copoenFailed = false
           conertToOffer = couponDetailes[0].offer / 100
           amount = conertToOffer * totalValue
           totalValue = amount
-          console.log("-------------amount----------------------", amount);
+        
           userHelpers.reduceCoponQuantity(req.session.coupon, couponDetailes[0].Quantity).then(() => {
 
 
@@ -241,7 +239,6 @@ module.exports = {
 
 
       }
-      console.log("--------------------||----totalValue----||-------------", totalValue);
 
 
       //   let total = await userHelpers.getTotalAmount(req.session.user)
@@ -249,46 +246,41 @@ module.exports = {
       //  let totals=total.total
 
       req.session.total = totalValue
-      console.log(">>>>>>>>>>>>>>>>>> >>>>>>>>>>>> >>>>>>>>>>", req.session.user._id);
       let wishlistCount=null
       let cartCount = null
      
         cartCount = await userHelpers.getCartCount(req.session.user._id)
-        console.log("......................................................", cartCount);
+       
        wishlistCount = await userHelpers.getWishListCount(req.session.user._id)
       res.render("user/shopping-cart", { product, user: req.session.user, totalValue, "copoenErr": req.session.copoenFailed ,cartCount,wishlistCount} )
      
     }
 
   }, postCouponPage: (req, res) => {
-    console.log("------------------", req.body);
-    console.log("|||||||||||||||||||||||||||||||||||  postCouponPage  |||||||||||||||||||||||||||||||");
-    console.log("___________", req.body.coupon);
+   
+  
     userHelpers.getCouponPage().then((response) => {
-      console.log("_--------------coupon-----------------", response);
+     
       response.forEach(element => {
-        console.log("------------------", element.coupon);
+       
         if (element.coupon == req.body.coupon) {
           userHelpers.getCouponCollection(req.body.coupon).then((response) => {
-            console.log("|||||||||||||||||||||||coupon|||||||||||", response);
+           
             let curretDate = new Date();
             req.session.copoenFailed = true
-            console.log("-------------------curretDate-------", curretDate);
+           
             if (response[0].expDate >= curretDate && response[0].dateStart <= curretDate) {
-              console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-              console.log("-----------------------------", element.coupon);
+             
               req.session.coupon = req.body.coupon
               req.session.couponStatus = true
-              console.log("-------------------------- req.session.coupon------------", req.session.coupon);
-              console.log("----------------------if work----");
-              console.log("---------------user----------------------", req.session.user._id);
+            
               req.session.copoenFailed = true
               res.json({ status: true })
 
             } else {
-              console.log("Ooooooooooooooooooooooooooooooooooooooooooooo")
+           
               res.redirect("/cart")
-              // res.send("ksdj")
+             
              
             }
 
@@ -298,7 +290,7 @@ module.exports = {
           req.session.couponStatus = false
 
           req.session.copoenFailed = true
-          console.log("----------------------else work----");
+
           res.json({ status: false })
         }
       });
@@ -310,7 +302,7 @@ module.exports = {
   , postChangeProductQuantityPage: (req, res) => {
     userHelpers.ChangeProductQuantity(req.body).then(async (response) => {
       response.total = await userHelpers.getTotalAmount(req.session.user)
-      console.log("------------||------", response.total)
+    
       if (response.total == 0) {
         response.status = true
       } else {
@@ -323,10 +315,10 @@ module.exports = {
   getCheckOutPage: async (req, res) => {
 
     let Addresss = await userHelpers.getAdressDetailes(req.session.user._id)
-    console.log("_____________________Addresss_________________________________", Addresss);
+
     // let total = await userHelpers.getTotalAmount(req.session.user)
     let wallet = await userHelpers.getWallet(req.session.user._id)
-    console.log("----wallet----wallet-----wallet----wallet----wallet----wallet----", wallet);
+
 
     let total = req.session.total
     if (wallet.length != 0) {
@@ -337,7 +329,7 @@ module.exports = {
       req.session.walletBalance = false
     }
     cartCount = await userHelpers.getCartCount(req.session.user._id)
-    console.log("......................................................", cartCount);
+   
    wishlistCount = await userHelpers.getWishListCount(req.session.user._id)
     console.log("./././//././././././././.", total);
     res.render("user/chekout", { total, user: req.session.user, Addresss, "wallet": req.session.walletBalance, cartCount,wishlistCount})
