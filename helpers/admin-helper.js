@@ -7,7 +7,6 @@ const bcrypt=require('bcrypt');
 
 module.exports={
     adminLogin:(userData)=>{
-        console.log("hello________________________________________________________");
        return new Promise(async(resolve,rejects)=>{
         let response={}
         let user=await db.get().collection(collection.ADMIN_COLLECTION).findOne({email:userData.email})
