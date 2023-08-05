@@ -338,20 +338,20 @@ module.exports = {
 
   },
   postCheckOutPage: async (req, res) => {
-    console.log("........................................................", req.body.userId);
+   
     let products = await userHelpers.getCartProductList(req.session.user)
-    console.log("products>>>>>>>>>>>", products);
+   
     let totalPrice = req.session.total
     console.log("products", products);
     console.log("totalPrice", totalPrice);
     let order = req.body
-    console.log("----- ----------order---------------------------", order);
+    
     userHelpers.placeOrder(order, products, totalPrice).then((orderId) => {
-console.log("---------payment--method--------------",req.body['payment-method'] )
+
       if (req.body['payment-method'] === 'COD') {
         res.json({ codSuccess: true })
       } if (req.body['payment-method'] === 'PayPal') {
-        console.log("::::::::::         ::::::::::::::::              :::::::::::::::::::::::    PayPal Work");
+        
         userHelpers.generatePayPal(order, totalPrice).then((response) => {
           
           let payPal = response;
@@ -373,19 +373,19 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
     }).then(async () => {
       let oreder = await productHelpers.getOrderProducts
     })
-    // console.log(".....................*****************...................................",req.body.userId); 
+   
   },
   getViewOrderPage: async (req, res) => {
     //  if(req.session.user){
 
-    console.log("....................      ...................        .................        .....");
+
     let orders = await userHelpers.getUserOrders(req.session.user._id)
-    console.log("----------        ----------        -----------     ------", orders)
+ 
     orders.forEach(element => {
       if (element.Date) {
         let date = element.Date
         let dateCut = new Date(date).toLocaleDateString()
-        console.log("---------dateCut-----dateCut-------dateCut-------dateCut------dateCut---", dateCut);
+      
         element.Date = dateCut
       }
     });
@@ -393,7 +393,7 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
     
   let wishlistCount = await userHelpers.getWishListCount(req.session.user._id)
     res.render('user/viewOrder', { user: req.session.user, orders ,cartCount,wishlistCount})
-    console.log("***********<><<><<><><><><>" + orders[0]);
+
     for (var i = 0; i < orders.length; i++) {
       console.log(orders[i].delivaryDetails);
     }
@@ -440,13 +440,12 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
   },
   postCancelOrderPage: async (req, res) => {
 
-    console.log("....................................................................", req.params.id);
     userHelpers.canceProduct(req.params.id, req.params.item).then(async (response) => {
       products = await userHelpers.getProductCollection(req.params.item)
       order = await userHelpers.getOrderCollection(req.params.id)
-      console.log("------order---order------order----order", order[0].paymentMethod);
+    
 
-      console.log("-----------products----products------products---------", products);
+
 
       if (order[0].paymentMethod != "COD") {
         userHelpers.addToWallet(req.session.user._id, products[0].price).then(() => {
@@ -465,9 +464,9 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
     res.redirect("/view-Order")
   },
   getMyAccountPage: async(req, res) => {
-    console.log("---getMyAccountPage--")
+
     let userDetials = await userHelpers.getMyAccountUser(req.session.user._id)
-    console.log("--------userDetials-----",userDetials)
+
   let cartCount = await userHelpers.getCartCount(req.session.user._id)
   let wishlistCount = await userHelpers.getWishListCount(req.session.user._id)
     res.render("user/myAccount", { user: req.session.user,userDetials,cartCount,wishlistCount})
@@ -478,7 +477,7 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
     res.render("user/add-new-Address",{cartCount,wishlistCount})
   },
   postSubmitAddressPage: (req, res) => {
-    console.log("______________________             ____________________________     _____", req.session.user._id);
+  
 
     //   console.log(req.body);
     //   let orderObj = {
@@ -508,8 +507,7 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
   getProductPage: async (req, res) => {
     let Category = await productHelpers.getAllcaegeory()
     let product = await productHelpers.getAllCategoryProduct(req.params.id)
-    console.log("--------------------------", req.params.id)
-    console.log("---------product---------product-------------", product)
+
     let title = req.params.id
     product.forEach(element => {
       if (element.Quantity == 0) {
@@ -534,7 +532,6 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
   getWishListPage: (req, res) => {
     let obj = {}
 
-    console.log("___________________________________api/calling________________", req.params.id);
     userHelpers.AddToWishList(req.params.id, req.session.user._id).then((response) => {
       res.json(response)
     })
@@ -545,7 +542,6 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
     res.render("user/forgotPassword")
   },
   postForgetPasswordPage: (req, res) => {
-    console.log("-------req.body------", req.body)
     res.send("post")
   },
   getChangePasswordPage: async(req, res) => {
@@ -556,12 +552,8 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
   },
  
   postRemoveCart: (req, res) => {
-    console.log("remove cart--------workk")
 
-    console.log("--------------------------------", req.body.proId)
-    console.log("-------------remove cart work-------------------")
     userHelpers.removeCart(req.body.proId, req.session.user._id).then((response) => {
-      console.log("responce---------here");
       res.json(response)
     })
 
@@ -570,17 +562,14 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
     let wishlist=await userHelpers.getAllWishLIst(req.session.user._id)
    
     
-      console.log("------------------||------------",wishlist)
     let product = await userHelpers.getWishListProducts(req.session.user._id)
     console.log("product|||||||||||||||||       |||||||||||||||||||||        ||||||||||||||", product);
     totalValue = 0
-    console.log("---------------", product)
     
 
 
     product.forEach(element => {
 
-      console.log("------||--produts--||--",element.product.Quantity)
       if (element.product.Quantity != 0) {
         
         element.stockErr = false
@@ -606,24 +595,19 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
     
   },
   postRemoveWishList: (req, res) => {
-      console.log("---------------",req.params.id)
       userHelpers.removeWishlist(req.params.id,req.session.user._id).then((response)=>{
         res.json(response)
       })  
   },
   postVerifyStatusPage:(req,res)=>{
-   console.log("postVerifyStatusPage---------payapal -----work-----")
   },
   getEditAddressPage:async(req,res)=>{
     let cartCount = await userHelpers.getCartCount(req.session.user._id)
      let wishlistCount = await userHelpers.getWishListCount(req.session.user._id,cartCount)
-    console.log("--------------",req.params.addrs1,req.params.addrs2,req.params.name1,req.params.name2)
     let Addresss = await userHelpers.getSpecifAdressDetailes(req.session.user._id,req.params.addrs1,req.params.addrs2,req.params.name1,req.params.name2)
-    console.log("_____________________Addresss_________________________________", Addresss);
         res.render("user/edit-address",{Addresss,cartCount,wishlistCount})
   },
   postEditAddressPage:(req,res)=>{
-    console.log("---------------------",req.body)
 
     userHelpers.updateAddress(req.body,req.session.user._id).then((response)=>{
      res.redirect('/place-Order')
@@ -671,15 +655,11 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
 
   },
   getConformPasswordPage:async(req,res)=>{
-     console.log("---getConformPasswordPage-----");
-    console.log("_______",req.body.password)
     await userHelpers.validatePassword(req.body.password,req.session.user._id).then((response)=>{
       if(response){
         res.json({status:true})
-        console.log("-----if work-----")
         // res.redirect("/change-pwd-repeatpassword")
       }else {
-        console.log("--------else work")
         res.json({status:false})
         
        
@@ -687,14 +667,12 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
     })
   },
   postRepeatPasswordPage:(req,res)=>{
-     console.log("------",req.body.password);
      userHelpers.updatePassword(req.session.user._id,req.body.password).then((responce)=>{
       
       res.json(responce)
      })
   },
   postPaypalChangeStaus:async(req,res)=>{
-     console.log("post Paypal ChangeStaus--|||||||    |||||||||      |||||||||||||--------",req.body)
 
   },
   getRepeatPasswordPage:async(req,res)=>{
@@ -706,11 +684,9 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
     let wishlist=await userHelpers.getAllWishLIst(req.session.user._id)
    
     
-      console.log("------------------||------------",wishlist)
     let product = await userHelpers.getWishListProducts(req.session.user._id)
     console.log("product|||||||||||||||||       |||||||||||||||||||||        ||||||||||||||", product);
     totalValue = 0
-    console.log("---------------", product)
     product.forEach(element => {
       if (element.product.Quantity < 0) {
         element.outOfstock = true
@@ -730,20 +706,15 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
       }
     });
     let Banner= await productHelpers.getBanner()
-    console.log("------Banner------",Banner)
     let Category = await productHelpers.getAllcaegeory()
-    console.log("-------------Category--------------", Category);
      let wishlistCount=null
     let cartCount = null
     if (req.session.user) {
       cartCount = await userHelpers.getCartCount(req.session.user._id)
-      console.log("......................................................", cartCount);
      wishlistCount = await userHelpers.getWishListCount(req.session.user._id)
-      console.log("---------------wishlistCount-----------",wishlistCount);  
     }
 
     productHelpers.getAllProducts().then((products) => {
-      console.log(".........................................          .....................", products);
       products.forEach(element => {
         if (element.Quantity == 0) {
           element.stockErr = true
