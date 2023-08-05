@@ -73,7 +73,6 @@ module.exports = {
         })
     },
     updateProduct: (proId, proDetails) => {
-        console.log("????????????????????         ????????/", proDetails.img);
         return new Promise((resolve, reject) => {
             db.get().collection(collection.PRODUCT_COLLECTION)
                 .updateOne({ _id: objectId(proId) }, {
@@ -103,7 +102,6 @@ module.exports = {
             for (var i = 0; i < verifyCategory.length; i++) {
                 console.log("verifyCategory in array", verifyCategory[i].categoryName);
                 if (category.categoryName == verifyCategory[i].categoryName) {
-                    console.log("::::::::::::::::::;", category.categoryName);
                     status = false;
 
                 }
@@ -142,7 +140,6 @@ module.exports = {
                 $set: { status: "blocked" }
             }).then((response) => {
                 resolve(response)
-                console.log("-======================================    ", response);
             }).catch((err) => {
                 console.log("blockUser err", err);
             })
@@ -158,7 +155,6 @@ module.exports = {
                 $set: { status: "unblocked" }
             }).then((response) => {
                 resolve(response)
-                console.log("-======================================    ", response);
             }).catch(() => {
                 console.log("unblockUser err", err);
             })
@@ -236,7 +232,6 @@ module.exports = {
         })
     },
     getOrderProducts: async (orderId) => {
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   " + orderId)
         return new Promise(async (resolve, reject) => {
             let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
                 {
@@ -274,9 +269,7 @@ module.exports = {
         })
     },
     getPoductPrice: (proId) => {
-        console.log("__________________________getPoductPrice____________________________");
         return new Promise(async (resolve, reject) => {
-            console.log("_______________________________step 3_______________________");
             let product = await db.get().collection(collection.PRODUCT_COLLECTION).find(objectId(proId)).toArray()
 
             resolve(product)
@@ -285,9 +278,6 @@ module.exports = {
 
     },
     updateOffer: (offerPrice, id, originlPrice,offer) => {
-        console.log("____________offer__________", offer)
-        console.log("____________id__________", id)
-        console.log("____________id__________", id)
         return new Promise(async (resolve, reject) => {
             await db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectId(id) },
                 {
@@ -299,15 +289,12 @@ module.exports = {
                     }
                 }
             ).then(() => {
-                console.log("_________________|||||||||||||||________");
                 resolve()
             }).catch((err) => {
-                console.log("___________________ERR________", err);
             })
         })
     },
     cancelOffer: (proId, price) => {
-        console.log("_____________price__________", price);
         return new Promise((resolve, reject) => {
             db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectId(proId) },
                 {
@@ -335,7 +322,6 @@ module.exports = {
             expDate: new Date(coupon.dateEnd)
 
         }
-        console.log("--------", coupon.dateStart);
         return new Promise((resolve, reject) => {
             db.get().collection(collection.COUPON_COLLECTION).insertOne(couponObj).then(() => {
                 resolve()
@@ -357,7 +343,6 @@ module.exports = {
 
     },
     addwishlist: (proId, userId) => {
-        console.log("-------addwishlist-----------addwishlist---------addwishlist")
         return new Promise((resolve, reject) => {
             let wishlistObj = {
                 'user': userId,
@@ -371,7 +356,6 @@ module.exports = {
 
     },
     getWishlist: (userId) => {
-        console.log("------------getWishlist--------------");
         return new Promise(async (resolve, reject) => {
             let response = await db.get().collection(collection.WISHLIST_COLLECTION).find({ 'user': userId }).toArray()
             resolve(response)
@@ -380,21 +364,14 @@ module.exports = {
     },
     updateWishList: (proId, userId) => {
         return new Promise(async(resolve, reject) => {
-            console.log("------------updateWishList------------");
             let wishListUser = await db.get().collection(collection.WISHLIST_COLLECTION).find({ 'user': userId }).toArray()
-            console.log("-----wishListUser-------wishListUser--------wishListUser------", wishListUser[0].product);
             // let array = wishListUser.product
-            // console.log("---------Array----------Arry---------", array);
-            console.log("---------Array----------Arry---------", proId);
             wishListUser.forEach(element => {
-                console.log("-----element--------element---",element);
                 if (element.product == proId ) {
-                    console.log("------------productExist-------productExist-------productExist");
                     WishlistStatus = false
                     
                 }
                 else {
-                    console.log("---------------userId-----userId-----------userId----", userId)
                     db.get().collection(collection.WISHLIST_COLLECTION).find({ 'user': userId }).insertOne({'product':proId})
                         
                     
@@ -458,7 +435,6 @@ module.exports = {
         })
     },
     getAllOrderByDate:(date)=>{
-        console.log("--------getAllOrderByDate--------getAllOrderByDate--------")
         let start = new Date(date.dateStart)
         let end =  new Date(date.dateEnd)
         console.log(start);
@@ -574,21 +550,18 @@ module.exports = {
       
     },
     totalOrderCount:()=>{
-        console.log("------totalOrderCount------")
         return new Promise(async(resolve,reject)=>{
             let totalOrder= await db.get().collection(collection.ORDER_COLLECTION).estimatedDocumentCount()
             resolve(totalOrder)
         })
     },
     totalUserCount:()=>{
-        console.log("-----------totalUserCount------");
         return new Promise(async(resolve,reject)=>{
             let totalUser = await db.get().collection(collection.USER_COLLECTION).estimatedDocumentCount()
             resolve(totalUser)
         })
     },
     totalSalesByIncomeYear:()=>{
-        console.log("----------totalSalesByIncomeYear----");
         return new Promise(async(resolve,reject)=>{
             let incomeByYear=await db.get().collection(collection.ORDER_COLLECTION).aggregate([
                 {
@@ -675,7 +648,6 @@ module.exports = {
     removeBanner:(BannerId)=>{
          return new Promise((resolve,reject)=>{
             db.get().collection(collection.BANNER_COLLECTION).deleteOne({_id:objectId(BannerId)}).then((responce)=>{
-                console.log("------responce---",responce);
                 resolve(responce)
             })
          })
@@ -683,7 +655,6 @@ module.exports = {
     getBannerProduct:(proId)=>{
       return new Promise(async(resolve,reject)=>{
         let product = await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:objectId(proId)})
-        console.log("-----product----",product);
         resolve(product)
       })
     }
