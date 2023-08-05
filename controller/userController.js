@@ -350,7 +350,7 @@ module.exports = {
 console.log("---------payment--method--------------",req.body['payment-method'] )
       if (req.body['payment-method'] === 'COD') {
         res.json({ codSuccess: true })
-      } else if (req.body['payment-method'] === 'PayPal') {
+      } if (req.body['payment-method'] === 'PayPal') {
         console.log("::::::::::         ::::::::::::::::              :::::::::::::::::::::::    PayPal Work");
         userHelpers.generatePayPal(order, totalPrice).then((response) => {
           
@@ -359,12 +359,12 @@ console.log("---------payment--method--------------",req.body['payment-method'] 
           res.json(payPal)
         })
 
-      } else if (req.body['payment-method'] === 'Wallet') {
+      } if (req.body['payment-method'] === 'Wallet') {
 
         userHelpers.updateWallet(req.session.user._id, req.session.total)
         res.json({ codSuccess: true })
       }
-      else if(req.body['payment-method'] ==='RazoPay') 
+       if(req.body['payment-method'] ==='RazoPay') 
         userHelpers.generateRazopay(orderId, totalPrice).then((response) => {
           res.json(response)
         })
