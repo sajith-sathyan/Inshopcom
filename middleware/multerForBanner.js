@@ -7,12 +7,10 @@ console.log(" mullter worked  ");
 const storage = multer.diskStorage({
     destination:function(req,file,cb){
 
-        console.log("folder----------------------------------");
         console.log(file);
          cb(null,"public/multiple-product-img")
     },
     filename:function(req,file,cb){   
-        console.log("filename----------------------------------");
         console.log(file);
         cb(null,file.fieldname+"-"+Date.now()+".jpg")
     }
