@@ -56,18 +56,14 @@ function pal() {
             let response = {}
 
             let user = await db.get().collection(collection.USER_COLLECTION).findOne({ email: userData.email })
-            console.log(">>>>>>>>>>>");
             //  
             let userStatus = await db.get().collection(collection.USER_COLLECTION).findOne({ status: userData.status })
 
 
                 //  console.log("-------user.email---userData.email--",user.email,userData.email)
-                 console.log("-------user.email-----",user.email)
 
             if (user.email === userData.email && user.status === 'unblock') {
-                console.log(">>>>>>>>>>> ..>>>>>>>>>>>>>>>>");
                 bcrypt.compare(userData.password, user.password).then((status) => {
-                    console.log("----------status----",status);
                     if (status) {
                         console.log("login success")
                            response.user = user
@@ -119,11 +115,9 @@ function pal() {
 
     },
     checkMobileNUmber: (userData) => {
-        console.log("ffffffffffffffff", userData);
         let response = {}
         return new Promise(async (resolve, rejects) => {
             let user= await db.get().collection(collection.USER_COLLECTION).findOne({mobile:userData})
-            console.log("mmmmmmmmmm", user);
 
             resolve(user)
 
@@ -137,9 +131,7 @@ function pal() {
     },
     
     AddToCart: async (proId, userId) => {
-        console.log("----------proID------------proID--------proID---------proID-------proID-----proID--", proId);
         product = await db.get().collection(collection.PRODUCT_COLLECTION).find({ _id: objectId(proId) }).toArray()
-        console.log("----------proID------------proID--------proID---------proID-------proID-----proID--", product[0].price);
 
 
         let proObj = {
@@ -161,7 +153,6 @@ function pal() {
                                 $inc: { "products.$.quantity": 1 }
                             }
                         ).then(() => {
-                            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                             resolve()
                         })
                 } else {
@@ -173,10 +164,8 @@ function pal() {
                             ,
 
                         ).then((response) => {
-                            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                             resolve()
                         }).catch((response) => {
-                            console.log("response>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", response);
                         })
                 }   
             } else {
@@ -243,7 +232,6 @@ function pal() {
         })
     },
     ChangeProductQuantity: (details) => {
-        console.log("--------------------details------------",details.count)
         details.count = parseInt(details.count)
         console.log("details.count", details.count);
 
@@ -275,7 +263,6 @@ function pal() {
         })
     },
     getTotalAmount: (userId) => {
-        console.log("..............          ...............           ..........", userId);
         return new Promise(async (resolve, reject) => {
             let total = await db.get().collection(collection.CART_COLLECTION).aggregate([
                 {
@@ -312,7 +299,6 @@ function pal() {
 
             ]).toArray()
 
-            console.log("ooooooooooooooooooooooo", total);
 
 
             let ttl = total[0].total
@@ -324,7 +310,6 @@ function pal() {
         })
     },
     placeOrder: (order, products, total) => {
-        console.log("---------------order['payment-method']----------- ",order['payment-method'] )
         return new Promise((resolve, reject) => {
             console.log("***********", order, products, total);
             if (order['payment-method'] == "COD") {
@@ -339,7 +324,6 @@ function pal() {
                 });
             }
 
-            console.log("--------------------------order----------")
 
             let orderObj = {
                 delivaryDetails: {
@@ -365,7 +349,6 @@ function pal() {
                 Date: new Date(),
 
             }
-            console.log("________________________________________________________________________________");
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response) => {
                 db.get().collection(collection.CART_COLLECTION).deleteMany({ user: objectId(order.userId) })
                 resolve(response.insertedId)
@@ -394,7 +377,6 @@ function pal() {
         console.log(userId);
         return new Promise(async (resolve, rejects) => {
             let cart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: objectId(userId._id) })
-            console.log("cart>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + cart.products);
             resolve(cart.products)
         }).catch((err) => {
             console.log("getCartProductList err", err);
@@ -402,7 +384,6 @@ function pal() {
     },
     getUserOrders: (userId) => {
         return new Promise(async (resolve, reject) => {
-            console.log("==============================" + userId);
             let orders = await db.get().collection(collection.ORDER_COLLECTION)
                 .find({ userId: objectId(userId) }).sort({ Date: -1 }).toArray()
             //  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   "+orders)
@@ -412,7 +393,6 @@ function pal() {
         })
     },
     getOrderProducts: async (orderId) => {
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   " + orderId)
         return new Promise(async (resolve, reject) => {
             let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
                 {
@@ -450,7 +430,6 @@ function pal() {
         })
     },
     generateRazopay: (orderId, total) => {
-        console.log(".........................generateRazopay work....." + orderId);
         return new Promise((resolve, reject) => {
             var instance = new Razorpay({ key_id: process.env.RAZOPAY_KEY_ID, key_secret: process.env.RAZOPAY_KEY_SECRET })
 
@@ -462,10 +441,8 @@ function pal() {
             instance.orders.create(options, function (err, order) {
                 if (err) {
                     for (let i = 0; i <= err.length; i++) {
-                        console.log("eroorr......" + err[i]);
                     }
                 } else {
-                    console.log("....................", order);
                     resolve(order)
                 }
 
@@ -496,7 +473,6 @@ function pal() {
     },
     changePaymentStatus: (orderId) => {
         console.log("changePaymentStatus", orderId);
-        console.log("----------------order--------", orderId);
         return new Promise(async (resolve, reject) => {
             //     console.log("--------------change order ststus -----------",orderId);
             //    let order= await db.get().collection(collection.ORDER_COLLECTION).find({_id:objectId(orderId)}).toArray()
@@ -542,7 +518,6 @@ function pal() {
 
     },
     generatePayPal: async (orderId, total) => {
-        console.log("----------generatePayPal------")
         pal();
         return new Promise((resolve, reject) => {
             var create_payment_json = {
@@ -579,11 +554,9 @@ function pal() {
             paypal.payment.create(create_payment_json, function (error, payment) {
                 console.log('called')
                 if (error) {
-                    console.log('_______________________error_________________', error);
 
                     throw error;
                 } else {
-                    console.log('______________________payment ______________', payment);
 
                     resolve(payment);
                 }
@@ -593,9 +566,7 @@ function pal() {
     addAdress: (Address, id) => {
 
         return new Promise((resolve, reject) => {
-            console.log("++++++++||||||||||||||+++++++++++++||||||||||++++++++++++++|||||||||||||||++++++++");
 
-            console.log(">>>>>>>>>>>>      >>>>>>>>>>>>>>>     >>>>>>", Address);
 
             let AddressObj = {
                 // + order.Postcode + "," + order.Country+","+order.TownCity+","
@@ -618,7 +589,6 @@ function pal() {
 
 
             db.get().collection(collection.ADDRESS_COLLECTION).insertOne(AddressObj).then((response) => {
-                console.log("++++++++   +++++++++++++           ++++++++++++++                  ++++++++");
                 resolve(response)
                 reject
             })
@@ -671,10 +641,8 @@ function pal() {
     },
     getProductCollection: (item) => {
 
-        console.log("------------item----------item-----------------item-----------", item);
         return new Promise(async (resolve, reject) => {
             await db.get().collection(collection.PRODUCT_COLLECTION).find({ _id: objectId(item) }).toArray().then((response) => {
-                // console.log("------------products----------products-----------------products-----------",response); 
                 resolve(response)
             })
 
@@ -690,13 +658,9 @@ function pal() {
 
 
             // let user=toString( wallet[0].user)
-            // console.log("----------wallet-----------wallet-------------wallet--------",wallet[0].user);
 
             if (wallet.length != 0) {
-                console.log("-------------------------", wallet[0].Balance);
                 let amount = parseInt(wallet[0].Balance) + parseInt(price)
-                console.log("----------amount-------amount-----amount---", amount);
-                console.log("---------if-----------worked--------");
                 db.get().collection(collection.WALLET_COLLECTION).updateOne({ user: userId },
                     {
                         $set: {
@@ -706,10 +670,8 @@ function pal() {
                 ).then(() => {
                     resolve()
                 }).catch((err) => {
-                    console.log("addToWallet-----if-----", err);
                 })
             } else {
-                console.log("----------else--------------work----------");
                 db.get().collection(collection.WALLET_COLLECTION).insertOne(walletObj).then(() => {
                     resolve()
                 }).catch((err) => {
@@ -725,19 +687,15 @@ function pal() {
 
     },
     getOrderCollection: (orderId) => {
-        console.log("---------------getOrderCollection-----------------------");
         return new Promise(async (resolve, reject) => {
             let response = await db.get().collection(collection.ORDER_COLLECTION).find({ _id: objectId(orderId) }).toArray()
-            console.log("------------------------response----------------", response);
             resolve(response)
         })
 
     },
     getWallet: (user) => {
-        console.log("---------getWallet-------getWallet--------------getWallet------");
         return new Promise(async (resolve, reject) => {
             await db.get().collection(collection.WALLET_COLLECTION).find({ user: user }).toArray().then((response) => {
-                console.log("----------response-------response----------response----", response);
                 resolve(response)
             })
 
@@ -746,7 +704,6 @@ function pal() {
 
     updatePassword: (userId,passsword ) => {
 
-        console.log("---------userId--------------userId------", userId);
         return new Promise(async (resolve, reject) => {
             let userPassword = await bcrypt.hash(passsword, 10)
             console.log("");
@@ -765,16 +722,10 @@ function pal() {
 
     },
     removeCart: (proId, userId) => {
-        console.log("----------product id----------------", proId)
-        console.log("----------product id----------------", userId)
         return new Promise(async(resolve,reject)=>{
             let cart =await db.get().collection(collection.CART_COLLECTION).find({user:objectId(userId)}).toArray()
-            console.log("-----wishList-------",cart);
-             console.log("-----------",cart[0].products);
             let array=cart[0].products
-            console.log("------------------arry.lenght-",array.length)
             let index = array.findIndex(product => product.item == proId)
-            console.log("-------",index);
             if (array.length!=1) {
               db.get().collection(collection.CART_COLLECTION).update  (
                 {
@@ -803,9 +754,7 @@ function pal() {
     },
     AddToWishList: async (proId, userId) => {
         return new Promise(async (resolve, reject) => {
-            console.log("----------proID------------proID--------proID---------proID-------proID-----proID--", proId);
             product = await db.get().collection(collection.PRODUCT_COLLECTION).find({ _id: objectId(proId) }).toArray()
-            console.log("----------proID------------proID--------proID---------proID-------proID-----proID--", product[0].price);
 
 
             let proObj = {
@@ -831,7 +780,6 @@ function pal() {
                         //     console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                         //     resolve()
                         // })
-                        console.log("-----------prouct-exist------------");
                         resolve()
                 } else {
                     db.get().collection(collection.WISHLIST_COLLECTION)
@@ -842,14 +790,12 @@ function pal() {
                             ,
 
                         ).then((response) => {
-                            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                             resolve(response)
                         }).catch((response) => {
-                            console.log("response>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", response);
+                            console.log(response);
                         })
                 }
             } else {
-                console.log("--------------------else------else-----------");
                 products = [proObj]
                 let cartObj = {
                     user: objectId(userId),
@@ -905,8 +851,6 @@ function pal() {
     removeWishlist:(proId,userId)=>{
      return new Promise(async(resolve,reject)=>{
         let wishList =await db.get().collection(collection.WISHLIST_COLLECTION).find({user:objectId(userId)}).toArray()
-        console.log("-----wishList-------",wishList);
-         console.log("-----------",wishList[0].products);
         let array=wishList[0].products
         let index = array.findIndex(product => product.item == proId)
         console.log("-------",proId);
@@ -949,7 +893,6 @@ function pal() {
         console.log("---getAllWishLIst");
         return new Promise(async(resolve,reject)=>{
             let wishList = await db.get().collection(collection.WISHLIST_COLLECTION).find({user:objectId(userId)}).toArray()
-            console.log("---------||______",wishList)
             
             resolve(wishList)
             
@@ -964,7 +907,6 @@ function pal() {
         })
     },
     updateAddress:(address,userId)=>{
-        console.log("--------updateAddress------",address.FirstName)
         
          return new Promise(async(resolve,reject)=>{
             // ,'StreetAddress1':address.FirstName,'StreetAddress2':address.LastName,'FirstName':address.FirstName,'LastName':address.LastName
@@ -986,17 +928,14 @@ function pal() {
                 }
             }
             ).then((responce)=>{
-              console.log("-------------||--------",responce)
                 resolve(responce)
             })
          })
     },
     deleteAddres:(userId,addrs1,addrs2,name1,name2)=>{
-        console.log("-------deleteAddres----");
       return new Promise(async(resolve,reject)=>{
        await db.get().collection(collection.ADDRESS_COLLECTION).deleteOne({'StreetAddress1':addrs1,'StreetAddress2':addrs2,'FirstName':name1,'LastName':name2,'user':objectId(userId)})
        .then((responce)=>{
-            console.log("-------responce-------",responce)
             resolve(responce)
         })
       })
@@ -1021,7 +960,6 @@ function pal() {
                 }
             }
             ).then((responce)=>{
-              console.log("-------------||--------",responce)
                 resolve(responce)
             })
          })
@@ -1030,7 +968,6 @@ function pal() {
         return new Promise(async(resolve,reject)=>{
             await db.get().collection(collection.ADDRESS_COLLECTION).deleteOne({'StreetAddress1':addrs1,'StreetAddress2':addrs2,'FirstName':name1,'LastName':name2,'user':objectId(userId)})
             .then((responce)=>{
-                 console.log("-------responce-------",responce)
                  resolve(responce)
              })
            })
@@ -1044,10 +981,8 @@ function pal() {
     validatePassword:(password,userId)=>{
         return new Promise(async(resolve,reject)=>{
             let originalPassword= await db.get().collection(collection.USER_COLLECTION).findOne({_id:objectId(userId)})
-            console.log("-------",originalPassword)
             bcrypt.compare(password, originalPassword.password).then((responce)=>{
                 resolve(responce)
-                console.log("responce-----",responce)
             })
         })
     
